@@ -46,8 +46,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		this(null, name, value, origin);
 	}
 
-	private ConfigurationProperty(ConfigurationPropertySource source, ConfigurationPropertyName name, Object value,
-			Origin origin) {
+	private ConfigurationProperty(ConfigurationPropertySource source, ConfigurationPropertyName name, Object value, Origin origin) {
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(value, "Value must not be null");
 		this.source = source;
@@ -59,6 +58,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 	/**
 	 * Return the {@link ConfigurationPropertySource} that provided the property or
 	 * {@code null} if the source is unknown.
+	 *
 	 * @return the configuration property source
 	 * @since 2.6.0
 	 */
@@ -68,6 +68,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 
 	/**
 	 * Return the name of the configuration property.
+	 *
 	 * @return the configuration property name
 	 */
 	public ConfigurationPropertyName getName() {
@@ -76,6 +77,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 
 	/**
 	 * Return the value of the configuration property.
+	 *
 	 * @return the configuration property value
 	 */
 	public Object getValue() {
@@ -111,10 +113,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 
 	@Override
 	public String toString() {
-		return new ToStringCreator(this).append("name", this.name)
-			.append("value", this.value)
-			.append("origin", this.origin)
-			.toString();
+		return new ToStringCreator(this).append("name", this.name).append("value", this.value).append("origin", this.origin).toString();
 	}
 
 	@Override
@@ -129,8 +128,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		return new ConfigurationProperty(name, value.getValue(), value.getOrigin());
 	}
 
-	static ConfigurationProperty of(ConfigurationPropertySource source, ConfigurationPropertyName name, Object value,
-			Origin origin) {
+	static ConfigurationProperty of(ConfigurationPropertySource source, ConfigurationPropertyName name, Object value, Origin origin) {
 		if (value == null) {
 			return null;
 		}

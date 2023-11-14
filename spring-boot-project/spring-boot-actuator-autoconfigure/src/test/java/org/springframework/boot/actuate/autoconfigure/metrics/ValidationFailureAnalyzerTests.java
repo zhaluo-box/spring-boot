@@ -41,21 +41,19 @@ class ValidationFailureAnalyzerTests {
 
 	@Test
 	void analyzesMissingRequiredConfiguration() {
-		FailureAnalysis analysis = new ValidationFailureAnalyzer()
-			.analyze(createFailure(MissingAccountIdAndApiKeyConfiguration.class));
+		FailureAnalysis analysis = new ValidationFailureAnalyzer().analyze(createFailure(MissingAccountIdAndApiKeyConfiguration.class));
 		assertThat(analysis).isNotNull();
 		assertThat(analysis.getCause().getMessage()).contains("management.metrics.export.newrelic.apiKey was 'null'");
 		assertThat(analysis.getDescription()).isEqualTo(String.format("Invalid Micrometer configuration detected:%n%n"
-				+ "  - management.metrics.export.newrelic.apiKey was 'null' but it is required when publishing to Insights API%n"
-				+ "  - management.metrics.export.newrelic.accountId was 'null' but it is required when publishing to Insights API"));
+																	  + "  - management.metrics.export.newrelic.apiKey was 'null' but it is required when publishing to Insights API%n"
+																	  + "  - management.metrics.export.newrelic.accountId was 'null' but it is required when publishing to Insights API"));
 	}
 
 	private Exception createFailure(Class<?> configuration) {
 		try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(configuration)) {
 			fail("Expected failure did not occur");
 			return null;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return ex;
 		}
 	}

@@ -30,8 +30,7 @@ import org.springframework.core.Ordered;
  * @author Yunkun Huang
  * @since 2.0.0
  */
-public class ReactiveWebServerFactoryCustomizer
-		implements WebServerFactoryCustomizer<ConfigurableReactiveWebServerFactory>, Ordered {
+public class ReactiveWebServerFactoryCustomizer implements WebServerFactoryCustomizer<ConfigurableReactiveWebServerFactory>, Ordered {
 
 	private final ServerProperties serverProperties;
 
@@ -44,6 +43,11 @@ public class ReactiveWebServerFactoryCustomizer
 		return 0;
 	}
 
+	/**
+	 * 一些端口、ssl、压缩、http2之类的配置
+	 *
+	 * @param factory the web server factory to customize
+	 */
 	@Override
 	public void customize(ConfigurableReactiveWebServerFactory factory) {
 		PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();

@@ -31,8 +31,7 @@ import org.springframework.util.ObjectUtils;
  * @author Phillip Webb
  * @since 2.0.0
  */
-public class TomcatServletWebServerFactoryCustomizer
-		implements WebServerFactoryCustomizer<TomcatServletWebServerFactory>, Ordered {
+public class TomcatServletWebServerFactoryCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory>, Ordered {
 
 	private final ServerProperties serverProperties;
 
@@ -62,8 +61,7 @@ public class TomcatServletWebServerFactoryCustomizer
 		factory.addContextCustomizers((context) -> context.setMapperContextRootRedirectEnabled(redirectContextRoot));
 	}
 
-	private void customizeUseRelativeRedirects(ConfigurableTomcatWebServerFactory factory,
-			boolean useRelativeRedirects) {
+	private void customizeUseRelativeRedirects(ConfigurableTomcatWebServerFactory factory, boolean useRelativeRedirects) {
 		factory.addContextCustomizers((context) -> context.setUseRelativeRedirects(useRelativeRedirects));
 	}
 
