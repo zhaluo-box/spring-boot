@@ -60,8 +60,7 @@ class SpringApplicationBannerPrinter {
 		Banner banner = getBanner(environment);
 		try {
 			logger.info(createStringFromBanner(banner, environment, sourceClass));
-		}
-		catch (UnsupportedEncodingException ex) {
+		} catch (UnsupportedEncodingException ex) {
 			logger.warn("Failed to create String for banner", ex);
 		}
 		return new PrintedBanner(banner, sourceClass);
@@ -93,8 +92,7 @@ class SpringApplicationBannerPrinter {
 			if (resource.exists() && !resource.getURL().toExternalForm().contains("liquibase-core")) {
 				return new ResourceBanner(resource);
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			// Ignore
 		}
 		return null;
@@ -115,8 +113,7 @@ class SpringApplicationBannerPrinter {
 		return null;
 	}
 
-	private String createStringFromBanner(Banner banner, Environment environment, Class<?> mainApplicationClass)
-			throws UnsupportedEncodingException {
+	private String createStringFromBanner(Banner banner, Environment environment, Class<?> mainApplicationClass) throws UnsupportedEncodingException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		banner.printBanner(environment, mainApplicationClass, new PrintStream(baos));
 		String charset = environment.getProperty("spring.banner.charset", "UTF-8");
