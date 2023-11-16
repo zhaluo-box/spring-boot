@@ -132,9 +132,9 @@ class ConfigurationPropertiesBinder {
 
 	private IgnoreTopLevelConverterNotFoundBindHandler getHandler() {
 		BoundConfigurationProperties bound = BoundConfigurationProperties.get(this.applicationContext);
-		return (bound != null)
-				? new IgnoreTopLevelConverterNotFoundBindHandler(new BoundPropertiesTrackingBindHandler(bound::add))
-				: new IgnoreTopLevelConverterNotFoundBindHandler();
+		return (bound != null) ?
+			   new IgnoreTopLevelConverterNotFoundBindHandler(new BoundPropertiesTrackingBindHandler(bound::add)) :
+			   new IgnoreTopLevelConverterNotFoundBindHandler();
 	}
 
 	private List<Validator> getValidators(Bindable<?> target) {
@@ -172,16 +172,13 @@ class ConfigurationPropertiesBinder {
 	}
 
 	private List<ConfigurationPropertiesBindHandlerAdvisor> getBindHandlerAdvisors() {
-		return this.applicationContext.getBeanProvider(ConfigurationPropertiesBindHandlerAdvisor.class)
-			.orderedStream()
-			.collect(Collectors.toList());
+		return this.applicationContext.getBeanProvider(ConfigurationPropertiesBindHandlerAdvisor.class).orderedStream().collect(Collectors.toList());
 	}
 
 	private Binder getBinder() {
 		if (this.binder == null) {
-			this.binder = new Binder(getConfigurationPropertySources(), getPropertySourcesPlaceholdersResolver(),
-					getConversionServices(), getPropertyEditorInitializer(), null,
-					ConfigurationPropertiesBindConstructorProvider.INSTANCE);
+			this.binder = new Binder(getConfigurationPropertySources(), getPropertySourcesPlaceholdersResolver(), getConversionServices(),
+									 getPropertyEditorInitializer(), null, ConfigurationPropertiesBindConstructorProvider.INSTANCE);
 		}
 		return this.binder;
 	}
@@ -207,19 +204,15 @@ class ConfigurationPropertiesBinder {
 
 	static void register(BeanDefinitionRegistry registry) {
 		if (!registry.containsBeanDefinition(FACTORY_BEAN_NAME)) {
-			BeanDefinition definition = BeanDefinitionBuilder
-				.rootBeanDefinition(ConfigurationPropertiesBinder.Factory.class)
-				.getBeanDefinition();
+			BeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(ConfigurationPropertiesBinder.Factory.class).getBeanDefinition();
 			definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 			registry.registerBeanDefinition(ConfigurationPropertiesBinder.FACTORY_BEAN_NAME, definition);
 		}
 		if (!registry.containsBeanDefinition(BEAN_NAME)) {
-			BeanDefinition definition = BeanDefinitionBuilder
-				.rootBeanDefinition(ConfigurationPropertiesBinder.class,
-						() -> ((BeanFactory) registry)
-							.getBean(FACTORY_BEAN_NAME, ConfigurationPropertiesBinder.Factory.class)
-							.create())
-				.getBeanDefinition();
+			BeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(ConfigurationPropertiesBinder.class,
+																				 () -> ((BeanFactory) registry).getBean(FACTORY_BEAN_NAME,
+																														ConfigurationPropertiesBinder.Factory.class)
+																											   .create()).getBeanDefinition();
 			definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 			registry.registerBeanDefinition(ConfigurationPropertiesBinder.BEAN_NAME, definition);
 		}
@@ -262,8 +255,7 @@ class ConfigurationPropertiesBinder {
 
 		@Override
 		public <T> Bindable<T> onStart(ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
-			return isConfigurationProperties(target.getType().resolve())
-					? target.withBindRestrictions(BindRestriction.NO_DIRECT_PROPERTY) : target;
+			return isConfigurationProperties(target.getType().resolve()) ? target.withBindRestrictions(BindRestriction.NO_DIRECT_PROPERTY) : target;
 		}
 
 		private boolean isConfigurationProperties(Class<?> target) {

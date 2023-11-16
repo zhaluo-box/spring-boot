@@ -42,6 +42,7 @@ public @interface EnableConfigurationProperties {
 
 	/**
 	 * The bean name of the configuration properties validator.
+	 *
 	 * @since 2.2.0
 	 */
 	String VALIDATOR_BEAN_NAME = "configurationPropertiesValidator";
@@ -50,6 +51,7 @@ public @interface EnableConfigurationProperties {
 	 * Convenient way to quickly register
 	 * {@link ConfigurationProperties @ConfigurationProperties} annotated beans with
 	 * Spring. Standard Spring Beans will also be scanned regardless of this value.
+	 *
 	 * @return {@code @ConfigurationProperties} annotated beans to register
 	 */
 	Class<?>[] value() default {};
