@@ -55,24 +55,24 @@ import org.springframework.data.repository.Repository;
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
-		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+								  @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 public @interface SpringBootApplication {
 
 	/**
 	 * Exclude specific auto-configuration classes such that they will never be applied.
+	 *
 	 * @return the classes to exclude
 	 */
-	@AliasFor(annotation = EnableAutoConfiguration.class)
-	Class<?>[] exclude() default {};
+	@AliasFor(annotation = EnableAutoConfiguration.class) Class<?>[] exclude() default {};
 
 	/**
 	 * Exclude specific auto-configuration class names such that they will never be
 	 * applied.
+	 *
 	 * @return the class names to exclude
 	 * @since 1.3.0
 	 */
-	@AliasFor(annotation = EnableAutoConfiguration.class)
-	String[] excludeName() default {};
+	@AliasFor(annotation = EnableAutoConfiguration.class) String[] excludeName() default {};
 
 	/**
 	 * Base packages to scan for annotated components. Use {@link #scanBasePackageClasses}
@@ -83,11 +83,11 @@ public @interface SpringBootApplication {
 	 * scanning or Spring Data {@link Repository} scanning. For those you should add
 	 * {@link org.springframework.boot.autoconfigure.domain.EntityScan @EntityScan} and
 	 * {@code @Enable...Repositories} annotations.
+	 *
 	 * @return base packages to scan
 	 * @since 1.3.0
 	 */
-	@AliasFor(annotation = ComponentScan.class, attribute = "basePackages")
-	String[] scanBasePackages() default {};
+	@AliasFor(annotation = ComponentScan.class, attribute = "basePackages") String[] scanBasePackages() default {};
 
 	/**
 	 * Type-safe alternative to {@link #scanBasePackages} for specifying the packages to
@@ -101,11 +101,11 @@ public @interface SpringBootApplication {
 	 * scanning or Spring Data {@link Repository} scanning. For those you should add
 	 * {@link org.springframework.boot.autoconfigure.domain.EntityScan @EntityScan} and
 	 * {@code @Enable...Repositories} annotations.
+	 *
 	 * @return base packages to scan
 	 * @since 1.3.0
 	 */
-	@AliasFor(annotation = ComponentScan.class, attribute = "basePackageClasses")
-	Class<?>[] scanBasePackageClasses() default {};
+	@AliasFor(annotation = ComponentScan.class, attribute = "basePackageClasses") Class<?>[] scanBasePackageClasses() default {};
 
 	/**
 	 * The {@link BeanNameGenerator} class to be used for naming detected components
@@ -116,12 +116,12 @@ public @interface SpringBootApplication {
 	 * use its inherited bean name generator, e.g. the default
 	 * {@link AnnotationBeanNameGenerator} or any custom instance supplied to the
 	 * application context at bootstrap time.
+	 *
 	 * @return {@link BeanNameGenerator} to use
 	 * @see SpringApplication#setBeanNameGenerator(BeanNameGenerator)
 	 * @since 2.3.0
 	 */
-	@AliasFor(annotation = ComponentScan.class, attribute = "nameGenerator")
-	Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
+	@AliasFor(annotation = ComponentScan.class, attribute = "nameGenerator") Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
 
 	/**
 	 * Specify whether {@link Bean @Bean} methods should get proxied in order to enforce
@@ -142,10 +142,10 @@ public @interface SpringBootApplication {
 	 * individually like when declared on non-{@code @Configuration} classes, a.k.a.
 	 * "@Bean Lite Mode" (see {@link Bean @Bean's javadoc}). It is therefore behaviorally
 	 * equivalent to removing the {@code @Configuration} stereotype.
-	 * @since 2.2
+	 *
 	 * @return whether to proxy {@code @Bean} methods
+	 * @since 2.2
 	 */
-	@AliasFor(annotation = Configuration.class)
-	boolean proxyBeanMethods() default true;
+	@AliasFor(annotation = Configuration.class) boolean proxyBeanMethods() default true;
 
 }
