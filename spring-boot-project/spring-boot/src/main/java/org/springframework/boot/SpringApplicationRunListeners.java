@@ -45,25 +45,22 @@ class SpringApplicationRunListeners {
 
 	private final ApplicationStartup applicationStartup;
 
-	SpringApplicationRunListeners(Log log, Collection<? extends SpringApplicationRunListener> listeners,
-			ApplicationStartup applicationStartup) {
+	SpringApplicationRunListeners(Log log, Collection<? extends SpringApplicationRunListener> listeners, ApplicationStartup applicationStartup) {
 		this.log = log;
 		this.listeners = new ArrayList<>(listeners);
 		this.applicationStartup = applicationStartup;
 	}
 
 	void starting(ConfigurableBootstrapContext bootstrapContext, Class<?> mainApplicationClass) {
-		doWithListeners("spring.boot.application.starting", (listener) -> listener.starting(bootstrapContext),
-				(step) -> {
-					if (mainApplicationClass != null) {
-						step.tag("mainApplicationClass", mainApplicationClass.getName());
-					}
-				});
+		doWithListeners("spring.boot.application.starting", (listener) -> listener.starting(bootstrapContext), (step) -> {
+			if (mainApplicationClass != null) {
+				step.tag("mainApplicationClass", mainApplicationClass.getName());
+			}
+		});
 	}
 
 	void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
-		doWithListeners("spring.boot.application.environment-prepared",
-				(listener) -> listener.environmentPrepared(bootstrapContext, environment));
+		doWithListeners("spring.boot.application.environment-prepared", (listener) -> listener.environmentPrepared(bootstrapContext, environment));
 	}
 
 	void contextPrepared(ConfigurableApplicationContext context) {
@@ -83,26 +80,22 @@ class SpringApplicationRunListeners {
 	}
 
 	void failed(ConfigurableApplicationContext context, Throwable exception) {
-		doWithListeners("spring.boot.application.failed",
-				(listener) -> callFailedListener(listener, context, exception), (step) -> {
-					step.tag("exception", exception.getClass().toString());
-					step.tag("message", exception.getMessage());
-				});
+		doWithListeners("spring.boot.application.failed", (listener) -> callFailedListener(listener, context, exception), (step) -> {
+			step.tag("exception", exception.getClass().toString());
+			step.tag("message", exception.getMessage());
+		});
 	}
 
-	private void callFailedListener(SpringApplicationRunListener listener, ConfigurableApplicationContext context,
-			Throwable exception) {
+	private void callFailedListener(SpringApplicationRunListener listener, ConfigurableApplicationContext context, Throwable exception) {
 		try {
 			listener.failed(context, exception);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			if (exception == null) {
 				ReflectionUtils.rethrowRuntimeException(ex);
 			}
 			if (this.log.isDebugEnabled()) {
 				this.log.error("Error handling failed", ex);
-			}
-			else {
+			} else {
 				String message = ex.getMessage();
 				message = (message != null) ? message : "no error message";
 				this.log.warn("Error handling failed (" + message + ")");
@@ -114,8 +107,7 @@ class SpringApplicationRunListeners {
 		doWithListeners(stepName, listenerAction, null);
 	}
 
-	private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction,
-			Consumer<StartupStep> stepAction) {
+	private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction, Consumer<StartupStep> stepAction) {
 		StartupStep step = this.applicationStartup.start(stepName);
 		this.listeners.forEach(listenerAction);
 		if (stepAction != null) {

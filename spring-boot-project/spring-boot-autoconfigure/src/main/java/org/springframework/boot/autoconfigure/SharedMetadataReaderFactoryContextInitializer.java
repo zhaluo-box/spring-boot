@@ -51,11 +51,9 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
  * @author Phillip Webb
  * @author Dave Syer
  */
-class SharedMetadataReaderFactoryContextInitializer
-		implements ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {
+class SharedMetadataReaderFactoryContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {
 
-	public static final String BEAN_NAME = "org.springframework.boot.autoconfigure."
-			+ "internalCachingMetadataReaderFactory";
+	public static final String BEAN_NAME = "org.springframework.boot.autoconfigure." + "internalCachingMetadataReaderFactory";
 
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
@@ -73,8 +71,7 @@ class SharedMetadataReaderFactoryContextInitializer
 	 * {@link CachingMetadataReaderFactory} and configure the
 	 * {@link ConfigurationClassPostProcessor}.
 	 */
-	static class CachingMetadataReaderFactoryPostProcessor
-			implements BeanDefinitionRegistryPostProcessor, PriorityOrdered {
+	static class CachingMetadataReaderFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor, PriorityOrdered {
 
 		private final ConfigurableApplicationContext context;
 
@@ -100,19 +97,16 @@ class SharedMetadataReaderFactoryContextInitializer
 
 		private void register(BeanDefinitionRegistry registry) {
 			if (!registry.containsBeanDefinition(BEAN_NAME)) {
-				BeanDefinition definition = BeanDefinitionBuilder
-					.rootBeanDefinition(SharedMetadataReaderFactoryBean.class, SharedMetadataReaderFactoryBean::new)
-					.getBeanDefinition();
+				BeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(SharedMetadataReaderFactoryBean.class,
+																					 SharedMetadataReaderFactoryBean::new).getBeanDefinition();
 				registry.registerBeanDefinition(BEAN_NAME, definition);
 			}
 		}
 
 		private void configureConfigurationClassPostProcessor(BeanDefinitionRegistry registry) {
 			try {
-				configureConfigurationClassPostProcessor(
-						registry.getBeanDefinition(AnnotationConfigUtils.CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+				configureConfigurationClassPostProcessor(registry.getBeanDefinition(AnnotationConfigUtils.CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
+			} catch (NoSuchBeanDefinitionException ex) {
 			}
 		}
 
@@ -127,8 +121,7 @@ class SharedMetadataReaderFactoryContextInitializer
 		private void configureConfigurationClassPostProcessor(AbstractBeanDefinition definition) {
 			Supplier<?> instanceSupplier = definition.getInstanceSupplier();
 			if (instanceSupplier != null) {
-				definition.setInstanceSupplier(
-						new ConfigurationClassPostProcessorCustomizingSupplier(this.context, instanceSupplier));
+				definition.setInstanceSupplier(new ConfigurationClassPostProcessorCustomizingSupplier(this.context, instanceSupplier));
 				return;
 			}
 			configureConfigurationClassPostProcessor(definition.getPropertyValues());
@@ -150,8 +143,7 @@ class SharedMetadataReaderFactoryContextInitializer
 
 		private final Supplier<?> instanceSupplier;
 
-		ConfigurationClassPostProcessorCustomizingSupplier(ConfigurableApplicationContext context,
-				Supplier<?> instanceSupplier) {
+		ConfigurationClassPostProcessorCustomizingSupplier(ConfigurableApplicationContext context, Supplier<?> instanceSupplier) {
 			this.context = context;
 			this.instanceSupplier = instanceSupplier;
 		}
@@ -175,8 +167,7 @@ class SharedMetadataReaderFactoryContextInitializer
 	 * {@link FactoryBean} to create the shared {@link MetadataReaderFactory}.
 	 */
 	static class SharedMetadataReaderFactoryBean
-			implements FactoryBean<ConcurrentReferenceCachingMetadataReaderFactory>, BeanClassLoaderAware,
-			ApplicationListener<ContextRefreshedEvent> {
+			implements FactoryBean<ConcurrentReferenceCachingMetadataReaderFactory>, BeanClassLoaderAware, ApplicationListener<ContextRefreshedEvent> {
 
 		private ConcurrentReferenceCachingMetadataReaderFactory metadataReaderFactory;
 

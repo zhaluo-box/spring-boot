@@ -57,6 +57,7 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 	 * property is set to {@code true}, no pre-initialization happens and each item is
 	 * initialized in the foreground as it needs to. When the property is {@code false}
 	 * (default), pre initialization runs in a separate thread in the background.
+	 *
 	 * @since 2.1.0
 	 */
 	public static final String IGNORE_BACKGROUNDPREINITIALIZER_PROPERTY_NAME = "spring.backgroundpreinitializer.ignore";
@@ -69,7 +70,7 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 
 	static {
 		ENABLED = !Boolean.getBoolean(IGNORE_BACKGROUNDPREINITIALIZER_PROPERTY_NAME) && !NativeDetector.inNativeImage()
-				&& Runtime.getRuntime().availableProcessors() > 1;
+				  && Runtime.getRuntime().availableProcessors() > 1;
 	}
 
 	@Override
@@ -77,16 +78,13 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 		if (!ENABLED) {
 			return;
 		}
-		if (event instanceof ApplicationEnvironmentPreparedEvent
-				&& preinitializationStarted.compareAndSet(false, true)) {
+		if (event instanceof ApplicationEnvironmentPreparedEvent && preinitializationStarted.compareAndSet(false, true)) {
 			performPreinitialization();
 		}
-		if ((event instanceof ApplicationReadyEvent || event instanceof ApplicationFailedEvent)
-				&& preinitializationStarted.get()) {
+		if ((event instanceof ApplicationReadyEvent || event instanceof ApplicationFailedEvent) && preinitializationStarted.get()) {
 			try {
 				preinitializationComplete.await();
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -113,16 +111,14 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 					try {
 						runnable.run();
 						return true;
-					}
-					catch (Throwable ex) {
+					} catch (Throwable ex) {
 						return false;
 					}
 				}
 
 			}, "background-preinit");
 			thread.start();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// This will fail on GAE where creating threads is prohibited. We can safely
 			// continue but startup will be slightly slower as the initialization will now
 			// happen on the main thread.

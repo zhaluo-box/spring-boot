@@ -49,8 +49,7 @@ import org.springframework.util.Assert;
  * @author Madhura Bhave
  * @since 2.0.0
  */
-public class ConditionEvaluationReportLoggingListener
-		implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class ConditionEvaluationReportLoggingListener implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
@@ -93,9 +92,7 @@ public class ConditionEvaluationReportLoggingListener
 			if (((ApplicationContextEvent) event).getApplicationContext() == initializerApplicationContext) {
 				logAutoConfigurationReport();
 			}
-		}
-		else if (event instanceof ApplicationFailedEvent
-				&& ((ApplicationFailedEvent) event).getApplicationContext() == initializerApplicationContext) {
+		} else if (event instanceof ApplicationFailedEvent && ((ApplicationFailedEvent) event).getApplicationContext() == initializerApplicationContext) {
 			logAutoConfigurationReport(true);
 		}
 	}
@@ -116,16 +113,13 @@ public class ConditionEvaluationReportLoggingListener
 			if (getLogLevelForReport().equals(LogLevel.INFO)) {
 				if (this.logger.isInfoEnabled()) {
 					this.logger.info(new ConditionEvaluationReportMessage(this.report));
-				}
-				else if (isCrashReport) {
+				} else if (isCrashReport) {
 					logMessage("info");
 				}
-			}
-			else {
+			} else {
 				if (this.logger.isDebugEnabled()) {
 					this.logger.debug(new ConditionEvaluationReportMessage(this.report));
-				}
-				else if (isCrashReport) {
+				} else if (isCrashReport) {
 					logMessage("debug");
 				}
 			}
@@ -133,8 +127,8 @@ public class ConditionEvaluationReportLoggingListener
 	}
 
 	private void logMessage(String logLevel) {
-		this.logger.info(String.format("%n%nError starting ApplicationContext. To display the "
-				+ "conditions report re-run your application with '" + logLevel + "' enabled."));
+		this.logger.info(String.format(
+				"%n%nError starting ApplicationContext. To display the " + "conditions report re-run your application with '" + logLevel + "' enabled."));
 	}
 
 	private class ConditionEvaluationReportListener implements GenericApplicationListener {
@@ -150,8 +144,7 @@ public class ConditionEvaluationReportLoggingListener
 			if (type == null) {
 				return false;
 			}
-			return ContextRefreshedEvent.class.isAssignableFrom(type)
-					|| ApplicationFailedEvent.class.isAssignableFrom(type);
+			return ContextRefreshedEvent.class.isAssignableFrom(type) || ApplicationFailedEvent.class.isAssignableFrom(type);
 		}
 
 		@Override

@@ -54,7 +54,7 @@ import org.springframework.util.StringUtils;
  * <pre class="code">
  * new SpringApplicationBuilder(ParentConfig.class).child(ChildConfig.class).run(args);
  * </pre>
- *
+ * <p>
  * Another common use case is setting active profiles and default properties to set up the
  * environment for an application:
  *
@@ -69,8 +69,8 @@ import org.springframework.util.StringUtils;
  *
  * @author Dave Syer
  * @author Andy Wilkinson
- * @since 1.0.0
  * @see SpringApplication
+ * @since 1.0.0
  */
 public class SpringApplicationBuilder {
 
@@ -105,6 +105,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Creates a new {@link SpringApplication} instance from the given sources. Subclasses
 	 * may override in order to provide a custom subclass of {@link SpringApplication}.
+	 *
 	 * @param sources the sources
 	 * @return the {@link SpringApplication} instance
 	 * @since 1.1.0
@@ -120,8 +121,9 @@ public class SpringApplicationBuilder {
 	 * Creates a new {@link SpringApplication} instance from the given sources using the
 	 * given {@link ResourceLoader}. Subclasses may override in order to provide a custom
 	 * subclass of {@link SpringApplication}.
+	 *
 	 * @param resourceLoader the resource loader or {@code null}
-	 * @param sources the sources
+	 * @param sources        the sources
 	 * @return the {@link SpringApplication} instance
 	 * @since 2.6.0
 	 */
@@ -131,6 +133,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Accessor for the current application context.
+	 *
 	 * @return the current application context (or null if not yet running)
 	 */
 	public ConfigurableApplicationContext context() {
@@ -139,6 +142,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Accessor for the current application.
+	 *
 	 * @return the current application (never null)
 	 */
 	public SpringApplication application() {
@@ -149,6 +153,7 @@ public class SpringApplicationBuilder {
 	 * Create an application context (and its parent if specified) with the command line
 	 * args provided. The parent is run first with the same arguments if it has not yet
 	 * been started.
+	 *
 	 * @param args the command line arguments
 	 * @return an application context created from the current state
 	 */
@@ -179,6 +184,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Returns a fully configured {@link SpringApplication} that is ready to run.
+	 *
 	 * @return the fully configured {@link SpringApplication}.
 	 */
 	public SpringApplication build() {
@@ -188,6 +194,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Returns a fully configured {@link SpringApplication} that is ready to run. Any
 	 * parent that has been configured will be run with the given {@code args}.
+	 *
 	 * @param args the parent's args
 	 * @return the fully configured {@link SpringApplication}.
 	 */
@@ -200,6 +207,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Create a child application with the provided sources. Default args and environment
 	 * are copied down into the child, but everything else is a clean sheet.
+	 *
 	 * @param sources the sources for the application (Spring configuration)
 	 * @return the child application builder
 	 */
@@ -208,9 +216,7 @@ public class SpringApplicationBuilder {
 		child.sources(sources);
 
 		// Copy environment stuff from parent to child
-		child.properties(this.defaultProperties)
-			.environment(this.environment)
-			.additionalProfiles(this.additionalProfiles);
+		child.properties(this.defaultProperties).environment(this.environment).additionalProfiles(this.additionalProfiles);
 		child.parent = this;
 
 		// It's not possible if embedded web server are enabled to support web contexts as
@@ -230,16 +236,14 @@ public class SpringApplicationBuilder {
 	/**
 	 * Add a parent application with the provided sources. Default args and environment
 	 * are copied up into the parent, but everything else is a clean sheet.
+	 *
 	 * @param sources the sources for the application (Spring configuration)
 	 * @return the parent builder
 	 */
 	public SpringApplicationBuilder parent(Class<?>... sources) {
 		if (this.parent == null) {
-			this.parent = new SpringApplicationBuilder(sources).web(WebApplicationType.NONE)
-				.properties(this.defaultProperties)
-				.environment(this.environment);
-		}
-		else {
+			this.parent = new SpringApplicationBuilder(sources).web(WebApplicationType.NONE).properties(this.defaultProperties).environment(this.environment);
+		} else {
 			this.parent.sources(sources);
 		}
 		return this.parent;
@@ -252,12 +256,12 @@ public class SpringApplicationBuilder {
 		if (this.parent != null) {
 			return this.parent;
 		}
-		throw new IllegalStateException(
-				"No parent defined yet (please use the other overloaded parent methods to set one)");
+		throw new IllegalStateException("No parent defined yet (please use the other overloaded parent methods to set one)");
 	}
 
 	/**
 	 * Add an already running parent context to an existing application.
+	 *
 	 * @param parent the parent context
 	 * @return the current builder (not the parent)
 	 */
@@ -274,6 +278,7 @@ public class SpringApplicationBuilder {
 	 * any arguments if they are not already running. To supply arguments when starting
 	 * the current application and its parent use {@link #sibling(Class[], String...)}
 	 * instead.
+	 *
 	 * @param sources the sources for the application (Spring configuration)
 	 * @return the new sibling builder
 	 */
@@ -285,9 +290,10 @@ public class SpringApplicationBuilder {
 	 * Create a sibling application (one with the same parent). A side effect of calling
 	 * this method is that the current application (and its parent) are started if they
 	 * are not already running.
+	 *
 	 * @param sources the sources for the application (Spring configuration)
-	 * @param args the command line arguments to use when starting the current app and its
-	 * parent
+	 * @param args    the command line arguments to use when starting the current app and its
+	 *                parent
 	 * @return the new sibling builder
 	 */
 	public SpringApplicationBuilder sibling(Class<?>[] sources, String... args) {
@@ -296,6 +302,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Explicitly set the factory used to create the application context.
+	 *
 	 * @param factory the factory to use
 	 * @return the current builder
 	 * @since 2.4.0
@@ -307,6 +314,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Add more sources (configuration classes and components) to this application.
+	 *
 	 * @param sources the sources to add
 	 * @return the current builder
 	 */
@@ -318,6 +326,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Flag to explicitly request a specific type of web application. Auto-detected based
 	 * on the classpath if not set.
+	 *
 	 * @param webApplicationType the type of web application
 	 * @return the current builder
 	 * @since 2.0.0
@@ -329,6 +338,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Flag to indicate the startup information should be logged.
+	 *
 	 * @param logStartupInfo the flag to set. Default true.
 	 * @return the current builder
 	 */
@@ -340,6 +350,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Sets the {@link Banner} instance which will be used to print the banner when no
 	 * static banner file is provided.
+	 *
 	 * @param banner the banner to use
 	 * @return the current builder
 	 */
@@ -356,6 +367,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Sets if the application is headless and should not instantiate AWT. Defaults to
 	 * {@code true} to prevent java icons appearing.
+	 *
 	 * @param headless if the application is headless
 	 * @return the current builder
 	 */
@@ -367,6 +379,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Sets if the created {@link ApplicationContext} should have a shutdown hook
 	 * registered.
+	 *
 	 * @param registerShutdownHook if the shutdown hook should be registered
 	 * @return the current builder
 	 */
@@ -378,6 +391,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Fixes the main application class that is used to anchor the startup messages.
+	 *
 	 * @param mainApplicationClass the class to use.
 	 * @return the current builder
 	 */
@@ -388,6 +402,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Flag to indicate that command line arguments should be added to the environment.
+	 *
 	 * @param addCommandLineProperties the flag to set. Default true.
 	 * @return the current builder
 	 */
@@ -399,6 +414,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Flag to indicate if the {@link ApplicationConversionService} should be added to the
 	 * application context's {@link Environment}.
+	 *
 	 * @param addConversionService if the conversion service should be added.
 	 * @return the current builder
 	 * @since 2.1.0
@@ -411,18 +427,19 @@ public class SpringApplicationBuilder {
 	/**
 	 * Adds {@link BootstrapRegistryInitializer} instances that can be used to initialize
 	 * the {@link BootstrapRegistry}.
+	 *
 	 * @param bootstrapRegistryInitializer the bootstrap registry initializer to add
 	 * @return the current builder
 	 * @since 2.4.5
 	 */
-	public SpringApplicationBuilder addBootstrapRegistryInitializer(
-			BootstrapRegistryInitializer bootstrapRegistryInitializer) {
+	public SpringApplicationBuilder addBootstrapRegistryInitializer(BootstrapRegistryInitializer bootstrapRegistryInitializer) {
 		this.application.addBootstrapRegistryInitializer(bootstrapRegistryInitializer);
 		return this;
 	}
 
 	/**
 	 * Flag to control whether the application should be initialized lazily.
+	 *
 	 * @param lazyInitialization the flag to set. Defaults to false.
 	 * @return the current builder
 	 * @since 2.2
@@ -436,6 +453,7 @@ public class SpringApplicationBuilder {
 	 * Default properties for the environment in the form {@code key=value} or
 	 * {@code key:value}. Multiple calls to this method are cumulative and will not clear
 	 * any previously set properties.
+	 *
 	 * @param defaultProperties the properties to set.
 	 * @return the current builder
 	 * @see SpringApplicationBuilder#properties(Properties)
@@ -470,6 +488,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Default properties for the environment.Multiple calls to this method are cumulative
 	 * and will not clear any previously set properties.
+	 *
 	 * @param defaultProperties the properties to set.
 	 * @return the current builder
 	 * @see SpringApplicationBuilder#properties(String...)
@@ -490,6 +509,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Default properties for the environment. Multiple calls to this method are
 	 * cumulative and will not clear any previously set properties.
+	 *
 	 * @param defaults the default properties
 	 * @return the current builder
 	 * @see SpringApplicationBuilder#properties(String...)
@@ -507,6 +527,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Add to the active Spring profiles for this app (and its parent and children).
+	 *
 	 * @param profiles the profiles to add.
 	 * @return the current builder
 	 */
@@ -525,6 +546,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Bean name generator for automatically generated bean names in the application
 	 * context.
+	 *
 	 * @param beanNameGenerator the generator to set.
 	 * @return the current builder
 	 */
@@ -535,6 +557,7 @@ public class SpringApplicationBuilder {
 
 	/**
 	 * Environment for the application context.
+	 *
 	 * @param environment the environment to set.
 	 * @return the current builder
 	 */
@@ -547,6 +570,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Prefix that should be applied when obtaining configuration properties from the
 	 * system environment.
+	 *
 	 * @param environmentPrefix the environment property prefix to set
 	 * @return the current builder
 	 * @since 2.5.0
@@ -559,6 +583,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * {@link ResourceLoader} for the application context. If a custom class loader is
 	 * needed, this is where it would be added.
+	 *
 	 * @param resourceLoader the resource loader to set.
 	 * @return the current builder
 	 */
@@ -570,6 +595,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Add some initializers to the application (applied to the {@link ApplicationContext}
 	 * before any bean definitions are loaded).
+	 *
 	 * @param initializers some initializers to add
 	 * @return the current builder
 	 */
@@ -583,6 +609,7 @@ public class SpringApplicationBuilder {
 	 * well as regular Spring events once the context is running). Any listeners that are
 	 * also {@link ApplicationContextInitializer} will be added to the
 	 * {@link #initializers(ApplicationContextInitializer...) initializers} automatically.
+	 *
 	 * @param listeners some listeners to add
 	 * @return the current builder
 	 */
@@ -594,6 +621,7 @@ public class SpringApplicationBuilder {
 	/**
 	 * Configure the {@link ApplicationStartup} to be used with the
 	 * {@link ApplicationContext} for collecting startup metrics.
+	 *
 	 * @param applicationStartup the application startup to use
 	 * @return the current builder
 	 * @since 2.4.0
@@ -606,10 +634,11 @@ public class SpringApplicationBuilder {
 	/**
 	 * Whether to allow circular references between beans and automatically try to resolve
 	 * them.
+	 *
 	 * @param allowCircularReferences whether circular references are allowed
 	 * @return the current builder
-	 * @since 2.6.0
 	 * @see AbstractAutowireCapableBeanFactory#setAllowCircularReferences(boolean)
+	 * @since 2.6.0
 	 */
 	public SpringApplicationBuilder allowCircularReferences(boolean allowCircularReferences) {
 		this.application.setAllowCircularReferences(allowCircularReferences);
