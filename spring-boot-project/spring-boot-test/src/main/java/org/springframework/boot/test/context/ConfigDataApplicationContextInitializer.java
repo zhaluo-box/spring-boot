@@ -27,16 +27,17 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
+ * 代替了 ConfigFileApplicationListener 的工作， 加载配置数据，例如 字面意义上的 application.properties 文件
+ * <p>
  * {@link ApplicationContextInitializer} that can be used with the
  * {@link ContextConfiguration#initializers()} to trigger loading of {@link ConfigData}
  * such as {@literal application.properties}.
  *
  * @author Phillip Webb
- * @since 2.4.0
  * @see ConfigDataEnvironmentPostProcessor
+ * @since 2.4.0
  */
-public class ConfigDataApplicationContextInitializer
-		implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class ConfigDataApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {

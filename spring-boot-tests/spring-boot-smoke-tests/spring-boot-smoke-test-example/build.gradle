@@ -1,19 +1,37 @@
 plugins {
-    id 'java'
+    id "java"
+    id "org.springframework.boot.conventions"
 }
 
-group 'org.springframework.boot'
-version '2.7.18-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
+description = "custom boot test"
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter"))
 }
 
+//plugins {
+//    id 'java'
+//}
+//
+//group 'org.springframework.boot'
+//version '2.7.18-SNAPSHOT'
+//
+////repositories {
+////    mavenLocal()
+////    mavenCentral()
+////}
+//
+//dependencies {
+
+////    developmentOnly project(":spring-boot-project:spring-boot-devtools")
+//    implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter"))
+////    implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-web"))
+////    testImplementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-test"))
+////    testImplementation("org.junit.jupiter:junit-jupiter")
+//}
+//
 test {
     useJUnitPlatform()
 }
