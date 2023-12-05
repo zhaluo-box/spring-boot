@@ -16,10 +16,11 @@
 
 package smoketest.bootstrapregistry.external.svn;
 
-import java.util.function.Function;
-
 import org.springframework.boot.BootstrapContext;
+import org.springframework.boot.BootstrapRegistry;
 import org.springframework.boot.BootstrapRegistryInitializer;
+
+import java.util.function.Function;
 
 /**
  * Allows the user to register a {@link BootstrapRegistryInitializer} with a custom
@@ -34,17 +35,29 @@ public final class SubversionBootstrap {
 
 	/**
 	 * Return a {@link BootstrapRegistryInitializer} for the given client factory.
+	 *
 	 * @param clientFactory the client factory
 	 * @return a {@link BootstrapRegistryInitializer} instance
 	 */
-	public static BootstrapRegistryInitializer withCustomClient(
-			Function<SubversionServerCertificate, SubversionClient> clientFactory) {
-		return (registry) -> registry.register(SubversionClient.class,
-				(bootstrapContext) -> createSubversionClient(bootstrapContext, clientFactory));
+	public static BootstrapRegistryInitializer withCustomClient(Function<SubversionServerCertificate, SubversionClient> clientFactory) {
+
+//		new BootstrapRegistryInitializer() {
+//			@Override
+//			public void initialize(BootstrapRegistry registry) {
+//				registry.register(SubversionClient.class, new BootstrapRegistry.InstanceSupplier<SubversionClient>() {
+//					@Override
+//					public SubversionClient get(BootstrapContext bootstrapContext) {
+//						return createSubversionClient(bootstrapContext, clientFactory);
+//					}
+//				});
+//			}
+//		};
+
+		return (registry) -> registry.register(SubversionClient.class, (bootstrapContext) -> createSubversionClient(bootstrapContext, clientFactory));
 	}
 
 	private static SubversionClient createSubversionClient(BootstrapContext bootstrapContext,
-			Function<SubversionServerCertificate, SubversionClient> clientFactory) {
+														   Function<SubversionServerCertificate, SubversionClient> clientFactory) {
 		return clientFactory.apply(bootstrapContext.get(SubversionServerCertificate.class));
 	}
 

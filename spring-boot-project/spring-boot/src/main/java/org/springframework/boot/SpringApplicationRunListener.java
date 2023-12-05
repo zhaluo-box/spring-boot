@@ -16,12 +16,12 @@
 
 package org.springframework.boot;
 
-import java.time.Duration;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+
+import java.time.Duration;
 
 /**
  * Listener for the {@link SpringApplication} {@code run} method.

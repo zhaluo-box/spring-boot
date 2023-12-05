@@ -18,7 +18,6 @@ package smoketest.bootstrapregistry.app;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
@@ -35,8 +34,7 @@ class SampleBootstrapRegistryApplicationTests {
 	@Test
 	void testBootstrapper(CapturedOutput output) {
 		SampleBootstrapRegistryApplication.main(new String[0]);
-		assertThat(output).contains("svn my-data from svn / example.com[secret]")
-			.contains("client smoketest.bootstrapregistry.app.MySubversionClient");
+		assertThat(output).contains("svn my-data from svn / example.com[secret]").contains("client smoketest.bootstrapregistry.app.MySubversionClient");
 	}
 
 }

@@ -16,9 +16,6 @@
 
 package smoketest.bootstrapregistry.external.svn;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import org.springframework.boot.BootstrapContext;
 import org.springframework.boot.BootstrapContextClosedEvent;
 import org.springframework.boot.BootstrapRegistry;
@@ -30,6 +27,9 @@ import org.springframework.boot.context.config.ConfigDataLocationNotFoundExcepti
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
+
+import java.io.IOException;
+import java.util.Collections;
 
 /**
  * {@link ConfigDataLoader} for subversion.
@@ -50,10 +50,8 @@ class SubversionConfigDataLoader implements ConfigDataLoader<SubversionConfigDat
 	}
 
 	@Override
-	public ConfigData load(ConfigDataLoaderContext context, SubversionConfigDataResource resource)
-			throws IOException, ConfigDataLocationNotFoundException {
-		context.getBootstrapContext()
-			.registerIfAbsent(SubversionServerCertificate.class, InstanceSupplier.of(resource.getServerCertificate()));
+	public ConfigData load(ConfigDataLoaderContext context, SubversionConfigDataResource resource) throws IOException, ConfigDataLocationNotFoundException {
+		context.getBootstrapContext().registerIfAbsent(SubversionServerCertificate.class, InstanceSupplier.of(resource.getServerCertificate()));
 		SubversionClient client = context.getBootstrapContext().get(SubversionClient.class);
 		String loaded = client.load(resource.getLocation());
 		PropertySource<?> propertySource = new MapPropertySource("svn", Collections.singletonMap("svn", loaded));
@@ -61,9 +59,7 @@ class SubversionConfigDataLoader implements ConfigDataLoader<SubversionConfigDat
 	}
 
 	private static void onBootstrapContextClosed(BootstrapContextClosedEvent event) {
-		event.getApplicationContext()
-			.getBeanFactory()
-			.registerSingleton("subversionClient", event.getBootstrapContext().get(SubversionClient.class));
+		event.getApplicationContext().getBeanFactory().registerSingleton("subversionClient", event.getBootstrapContext().get(SubversionClient.class));
 	}
 
 }

@@ -3,3 +3,7 @@ smoketest.bootstrapregistry.external.svn.SubversionConfigDataLocationResolver
 
 org.springframework.boot.context.config.ConfigDataLoader=\
 smoketest.bootstrapregistry.external.svn.SubversionConfigDataLoader
+
+# Run Listeners
+org.springframework.boot.SpringApplicationRunListener=\
+smoketest.bootstrapregistry.listener.CustomRunListener

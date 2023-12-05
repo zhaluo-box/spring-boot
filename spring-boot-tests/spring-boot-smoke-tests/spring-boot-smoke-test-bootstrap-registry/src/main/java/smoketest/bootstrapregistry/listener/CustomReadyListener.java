@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package org.springframework.boot;
+package smoketest.bootstrapregistry.listener;
+
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 
 /**
- * A {@link BootstrapContext} that also provides configuration methods through the
- * {@link BootstrapRegistry} interface.
+ * Created  on 2023/12/5 15:15:15
  *
- * @author Phillip Webb
- * @see BootstrapRegistry
- * @see BootstrapContext
- * @see DefaultBootstrapContext
- * @since 2.4.0
+ * @author wmz
  */
-public interface ConfigurableBootstrapContext extends BootstrapRegistry, BootstrapContext {
+@Component
+public class CustomReadyListener implements ApplicationListener<ApplicationReadyEvent> {
 
+	@Override
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+		System.out.println("spring 应用已准备好 event = " + event);
+	}
 }

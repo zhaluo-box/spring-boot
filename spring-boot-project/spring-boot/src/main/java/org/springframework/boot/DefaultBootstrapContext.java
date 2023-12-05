@@ -16,16 +16,16 @@
 
 package org.springframework.boot;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.util.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Default {@link ConfigurableBootstrapContext} implementation.
@@ -127,6 +127,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 	/**
 	 * Method to be called when {@link BootstrapContext} is closed and the
 	 * {@link ApplicationContext} is prepared.
+	 *
 	 * @param applicationContext the prepared context
 	 */
 	public void close(ConfigurableApplicationContext applicationContext) {
