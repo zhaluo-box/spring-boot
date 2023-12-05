@@ -17,6 +17,7 @@
 package smoketest.bootstrapregistry.app;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -32,16 +33,17 @@ public class SampleBootstrapRegistryApplication {
 		// This example shows how a Bootstrapper can be used to register a custom
 		// SubversionClient that still has access to data provided in the
 		// application.properties file
-//		SpringApplication application = new SpringApplication(SampleBootstrapRegistryApplication.class);
-//		application.addBootstrapRegistryInitializer(SubversionBootstrap.withCustomClient(MySubversionClient::new));
-//		application.run(args);
+		//		SpringApplication application = new SpringApplication(SampleBootstrapRegistryApplication.class);
+		//		application.addBootstrapRegistryInitializer(SubversionBootstrap.withCustomClient(MySubversionClient::new));
+		//		application.run(args);
 
 		SpringApplication application = new SpringApplicationBuilder().sources(SampleBootstrapRegistryApplication.class)
-																.addBootstrapRegistryInitializer(SubversionBootstrap.withCustomClient(MySubversionClient::new))
-																.build();
+																	  .web(WebApplicationType.NONE)
+																	  .addBootstrapRegistryInitializer(
+																			  SubversionBootstrap.withCustomClient(MySubversionClient::new))
+																	  .build();
 
 		ConfigurableApplicationContext context = application.run(args);
-
 
 		context.close();
 

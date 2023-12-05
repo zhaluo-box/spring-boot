@@ -283,6 +283,8 @@ public class SpringApplication {
 		long startTime = System.nanoTime();
 		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
 		ConfigurableApplicationContext context = null;
+
+		// jwt Headless 配置属性
 		configureHeadlessProperty();
 
 		SpringApplicationRunListeners listeners = getRunListeners(args);
@@ -292,17 +294,24 @@ public class SpringApplication {
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
 			ConfigurableEnvironment environment = prepareEnvironment(listeners, bootstrapContext, applicationArguments);
 			configureIgnoreBeanInfo(environment);
+			// 打印 Banner
 			Banner printedBanner = printBanner(environment);
+
 			context = createApplicationContext();
 			context.setApplicationStartup(this.applicationStartup);
+
 			prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);
 			refreshContext(context);
+
 			afterRefresh(context, applicationArguments);
 			Duration timeTakenToStartup = Duration.ofNanos(System.nanoTime() - startTime);
+
 			if (this.logStartupInfo) {
 				new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), timeTakenToStartup);
 			}
+			// 主动调用并触发 ApplicationStartedEvent
 			listeners.started(context, timeTakenToStartup);
+			// 调用runner
 			callRunners(context, applicationArguments);
 		} catch (Throwable ex) {
 			handleRunFailure(context, ex, listeners);
@@ -310,6 +319,7 @@ public class SpringApplication {
 		}
 		try {
 			Duration timeTakenToReady = Duration.ofNanos(System.nanoTime() - startTime);
+			// 主动调用并触发 ApplicationReadyEvent
 			listeners.ready(context, timeTakenToReady);
 		} catch (Throwable ex) {
 			handleRunFailure(context, ex, null);
@@ -330,7 +340,10 @@ public class SpringApplication {
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
 		ConfigurationPropertySources.attach(environment);
+
+		// 触发 ApplicationEnvironmentPreparedEvent
 		listeners.environmentPrepared(bootstrapContext, environment);
+
 		DefaultPropertiesPropertySource.moveToEnd(environment);
 		Assert.state(!environment.containsProperty("spring.main.environment-prefix"), "Environment prefix cannot be set via properties.");
 		bindToSpringApplication(environment);
@@ -358,7 +371,10 @@ public class SpringApplication {
 		context.setEnvironment(environment);
 		postProcessApplicationContext(context);
 		applyInitializers(context);
+
+		// 触发 ApplicationContextInitializedEvent
 		listeners.contextPrepared(context);
+
 		bootstrapContext.close(context);
 		if (this.logStartupInfo) {
 			logStartupInfo(context.getParent() == null);
@@ -438,6 +454,7 @@ public class SpringApplication {
 		if (this.environment != null) {
 			return this.environment;
 		}
+		// 依赖 spring.factories  Application Context Factories
 		ConfigurableEnvironment environment = this.applicationContextFactory.createEnvironment(this.webApplicationType);
 		if (environment == null && this.applicationContextFactory != ApplicationContextFactory.DEFAULT) {
 			environment = ApplicationContextFactory.DEFAULT.createEnvironment(this.webApplicationType);
@@ -759,6 +776,7 @@ public class SpringApplication {
 			try {
 				handleExitCode(context, exception);
 				if (listeners != null) {
+					// 触发 ApplicationFailedEvent
 					listeners.failed(context, exception);
 				}
 			} finally {
